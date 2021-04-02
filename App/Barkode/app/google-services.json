@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "165269326711",
+    "project_id": "barkode-72baa",
+    "storage_bucket": "barkode-72baa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165269326711:android:6b07dd5dff824460c26f72",
+        "android_client_info": {
+          "package_name": "com.barkode.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165269326711-8l39ud0dvm0aiun7mpm8p3rvhs43r1it.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD5RG5S2BGqB0TaybooAuQN6Lx-200t54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165269326711-8l39ud0dvm0aiun7mpm8p3rvhs43r1it.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
