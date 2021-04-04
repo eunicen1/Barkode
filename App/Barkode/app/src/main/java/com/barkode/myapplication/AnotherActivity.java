@@ -48,8 +48,20 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
+
+
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -151,7 +163,6 @@ public class AnotherActivity extends AppCompatActivity{
                 // location is received
                 mCurrentLocation = locationResult.getLastLocation();
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-
                 updateLocationUI();
             }
         };
@@ -207,6 +218,19 @@ public class AnotherActivity extends AppCompatActivity{
 
             // location last updated time
             txtUpdatedOn.setText("Last updated on: " + mLastUpdateTime);
+            //HERE WE WILL UPDATE THE FIREBASE DATABSE TOO:
+            //Need to find a batter place to put this hashmap, in the current format it will be overwritten every time
+               final FirebaseDatabase database = FirebaseDatabase.getInstance();
+               DatabaseReference ref = database.getReference();
+               DatabaseReference ventilatorsRef = ref.child("ventilators");
+               Map<String, Ventilator> ventilators = new HashMap<>();
+               String ventId="aa";
+               String model="modeltest";
+               String updatedBy="testUpdater";
+               String status= "Gucci";
+               String CurrentLocation=mCurrentLocation.getLatitude()+"."+mCurrentLocation.getLongitude();
+               ventilators.put(ventId, new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime));
+               ventilatorsRef.setValue(ventilators);
         }
         toggleButtons();
     }

@@ -27,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private SignInButton signInButton;
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient  = GoogleSignIn.getClient(this, gso);
+        //Creators for Database Hashmap
 
         signInButton.setOnClickListener(new View.OnClickListener() {
 
