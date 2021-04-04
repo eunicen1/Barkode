@@ -220,17 +220,7 @@ public class AnotherActivity extends AppCompatActivity{
             txtUpdatedOn.setText("Last updated on: " + mLastUpdateTime);
             //HERE WE WILL UPDATE THE FIREBASE DATABSE TOO:
             //Need to find a batter place to put this hashmap, in the current format it will be overwritten every time
-               final FirebaseDatabase database = FirebaseDatabase.getInstance();
-               DatabaseReference ref = database.getReference();
-               DatabaseReference ventilatorsRef = ref.child("ventilators");
-               Map<String, Ventilator> ventilators = new HashMap<>();
-               String ventId="aa";
-               String model="modeltest";
-               String updatedBy="testUpdater";
-               String status= "Gucci";
-               String CurrentLocation=mCurrentLocation.getLatitude()+"."+mCurrentLocation.getLongitude();
-               ventilators.put(ventId, new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime));
-               ventilatorsRef.setValue(ventilators);
+
         }
         toggleButtons();
     }
@@ -316,6 +306,7 @@ public class AnotherActivity extends AppCompatActivity{
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         mRequestingLocationUpdates = true;
                         startLocationUpdates();
+
                     }
 
                     @Override
@@ -338,6 +329,7 @@ public class AnotherActivity extends AppCompatActivity{
     public void stopLocationButtonClick() {
         mRequestingLocationUpdates = false;
         stopLocationUpdates();
+
     }
 
     public void stopLocationUpdates() {
@@ -358,6 +350,7 @@ public class AnotherActivity extends AppCompatActivity{
         if (mCurrentLocation != null) {
             Toast.makeText(getApplicationContext(), "Lat: " + mCurrentLocation.getLatitude()
                     + ", Lng: " + mCurrentLocation.getLongitude(), Toast.LENGTH_LONG).show();
+            writedb();
         } else {
             Toast.makeText(getApplicationContext(), "Last known location is not available!", Toast.LENGTH_SHORT).show();
         }
@@ -438,6 +431,20 @@ public class AnotherActivity extends AppCompatActivity{
             // pausing location updates
             stopLocationUpdates();
         }
+    }
+    public void writedb(){
+        Toast.makeText(AnotherActivity.this,"Connecting to Database",Toast.LENGTH_SHORT).show();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("https://barkode-72baa-default-rtdb.firebaseio.com/");
+        DatabaseReference ventilatorsRef = ref.child("ventilators");
+        Map<String, Ventilator> ventilators = new HashMap<>();
+        String ventId="aa";
+        String model="modeltest";
+        String updatedBy="testUpdater";
+        String status= "Gucci";
+        String CurrentLocation=mCurrentLocation.getLatitude()+"."+mCurrentLocation.getLongitude();
+        ventilators.put(ventId, new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime));
+        ventilatorsRef.setValue(ventilators);
     }
 
 }
