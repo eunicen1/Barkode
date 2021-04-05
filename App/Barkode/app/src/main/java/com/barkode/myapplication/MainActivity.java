@@ -157,21 +157,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-    public void writedb(){
 
-        Toast.makeText(MainActivity.this,"Connecting to Database",Toast.LENGTH_SHORT).show();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("https://barkode-72baa-default-rtdb.firebaseio.com/");
-        DatabaseReference ventilatorsRef = ref.child("ventilators");
-        Map<String, Ventilator> ventilators = new HashMap<>();
-        String ventId="aa";
-        String model="modeltest";
-        String updatedBy="testUpdater";
-        String status= "Good";
-        String CurrentLocation="Gang";
-        String mLastUpdateTime="0:00";
-        ventilators.put(ventId, new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime));
-        ventilatorsRef.setValue(ventilators);
-    }
 }
 

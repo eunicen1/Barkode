@@ -39,6 +39,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.karumi.dexter.Dexter;
@@ -441,29 +443,13 @@ public class AnotherActivity extends AppCompatActivity{
         Map<String, Ventilator> ventilators = new HashMap<>();
         String ventId="TestVentilatorUnit";
         String model="TestModel";
-        String updatedBy="UpdaterId";
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String updatedBy=user.getDisplayName();
         String status= "TestWorking";
         String CurrentLocation=mCurrentLocation.getLatitude()+"."+mCurrentLocation.getLongitude();
-       // Ventilator ventilaaation=new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime);
-       // System.out.println(ventilaaation.id);
-        //System.out.println(ventilaaation.location);
         ventilators.put(ventId, new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime));
-       // ref.child(ventId).setValue(ventilaaation);
         ventilatorsRef.setValue(ventilators);
-        //DatabaseReference dataRef = ref.child("data");
-        /*
-        dataRef.setValue("I'm writing data", new DatabaseReference.CompletionListener() {
 
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                } else {
-                    System.out.println("Data saved successfully.");
-                }
-            }
-        });
-*/
     }
 
 }
