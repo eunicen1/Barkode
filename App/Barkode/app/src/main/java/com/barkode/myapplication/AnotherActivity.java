@@ -118,6 +118,7 @@ public class AnotherActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.anotheractivity);
         ButterKnife.bind(this);
 

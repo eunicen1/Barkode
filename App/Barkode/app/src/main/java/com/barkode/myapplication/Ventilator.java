@@ -36,6 +36,6 @@ public class Ventilator {
     }
 }
 
-//This needs to go somewhere else it's the actual hashmap used to store information
+
 
 
