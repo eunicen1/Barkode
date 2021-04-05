@@ -26,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
             String personId=account.getId();
             Uri personPhoto=account.getPhotoUrl();
             Toast.makeText(MainActivity.this,personName+" "+personEmail,Toast.LENGTH_SHORT).show();
+
             gotoActivity();
         }
     }
@@ -153,6 +156,22 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+    public void writedb(){
+
+        Toast.makeText(MainActivity.this,"Connecting to Database",Toast.LENGTH_SHORT).show();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("https://barkode-72baa-default-rtdb.firebaseio.com/");
+        DatabaseReference ventilatorsRef = ref.child("ventilators");
+        Map<String, Ventilator> ventilators = new HashMap<>();
+        String ventId="aa";
+        String model="modeltest";
+        String updatedBy="testUpdater";
+        String status= "Good";
+        String CurrentLocation="Gang";
+        String mLastUpdateTime="0:00";
+        ventilators.put(ventId, new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime));
+        ventilatorsRef.setValue(ventilators);
     }
 }
 

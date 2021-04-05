@@ -11,12 +11,18 @@ public class Ventilator {
     public String model;
     public String location; //current ventilator location, will udpate
     public String updatedBy; //UID for last updating person
+    public String status;
     public String lastUpdateTime;
     public Ventilator(String id, String model){
         //2-Variable constructor, included for the case when ventilator unit must be added to logging system
     }
     public Ventilator(String id, String model, String location, String status, String updatedBy,String lastUpdateTime){
-        //4-Variable, default for location updates.
+       this.id=id;
+       this.model=model;
+       this.location=location;
+       this.status=status;
+       this.updatedBy=updatedBy;
+       this.lastUpdateTime=lastUpdateTime;
     }
     //Getter Methods for Quick access to database information.
     private String getid(){

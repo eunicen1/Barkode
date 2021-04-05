@@ -220,7 +220,7 @@ public class AnotherActivity extends AppCompatActivity{
             txtUpdatedOn.setText("Last updated on: " + mLastUpdateTime);
             //HERE WE WILL UPDATE THE FIREBASE DATABSE TOO:
             //Need to find a batter place to put this hashmap, in the current format it will be overwritten every time
-
+            writedb();
         }
         toggleButtons();
     }
@@ -433,18 +433,36 @@ public class AnotherActivity extends AppCompatActivity{
         }
     }
     public void writedb(){
-        Toast.makeText(AnotherActivity.this,"Connecting to Database",Toast.LENGTH_SHORT).show();
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("https://barkode-72baa-default-rtdb.firebaseio.com/");
+        DatabaseReference ref = database.getReference();
         DatabaseReference ventilatorsRef = ref.child("ventilators");
         Map<String, Ventilator> ventilators = new HashMap<>();
-        String ventId="aa";
-        String model="modeltest";
-        String updatedBy="testUpdater";
-        String status= "Gucci";
+        String ventId="TestVentilatorUnit";
+        String model="TestModel";
+        String updatedBy="UpdaterId";
+        String status= "TestWorking";
         String CurrentLocation=mCurrentLocation.getLatitude()+"."+mCurrentLocation.getLongitude();
+       // Ventilator ventilaaation=new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime);
+       // System.out.println(ventilaaation.id);
+        //System.out.println(ventilaaation.location);
         ventilators.put(ventId, new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime));
+       // ref.child(ventId).setValue(ventilaaation);
         ventilatorsRef.setValue(ventilators);
+        //DatabaseReference dataRef = ref.child("data");
+        /*
+        dataRef.setValue("I'm writing data", new DatabaseReference.CompletionListener() {
+
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    System.out.println("Data could not be saved " + databaseError.getMessage());
+                } else {
+                    System.out.println("Data saved successfully.");
+                }
+            }
+        });
+*/
     }
 
 }
