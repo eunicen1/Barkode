@@ -24,6 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AnotherActivity"></activity>
+        <activity android:name=".ViewAll"></activity>
+        <activity android:name=".MapView"></activity>
         </application>
 
 </manifest>

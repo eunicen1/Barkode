@@ -10,6 +10,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -59,6 +60,10 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import com.google.zxing.client.android.Intents;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -73,6 +78,8 @@ public class AnotherActivity extends AppCompatActivity{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private Button scanbutton;
+
+
 
     @BindView(R.id.submit_btn)
     Button submit_btn;
@@ -113,7 +120,8 @@ public class AnotherActivity extends AppCompatActivity{
     private LocationSettingsRequest mLocationSettingsRequest;
     private LocationCallback mLocationCallback;
     private Location mCurrentLocation;
-
+    public Map<String,Ventilator> ventilators = new HashMap<>();
+    public final int CUSTOMIZED_REQUEST_CODE = 0x0000ffff;
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
 
@@ -136,6 +144,13 @@ public class AnotherActivity extends AppCompatActivity{
                 scan(v);
             }
         });
+        Button viewbtn =(Button) findViewById(R.id.viewallbutton);
+        viewbtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                gotoActivity(view);
+            }
+        });
         entrybarcode.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -152,8 +167,9 @@ public class AnotherActivity extends AppCompatActivity{
         //show the scanner
         Intent i = new Intent();
         new IntentIntegrator(this).initiateScan();
-        startActivityForResult(i,1);
+       //startActivityForResult(i,1);
     }
+
 
     private void init() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -267,6 +283,7 @@ public class AnotherActivity extends AppCompatActivity{
                                 mLocationCallback, Looper.myLooper());
 
                         updateLocationUI();
+
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
@@ -335,6 +352,17 @@ public class AnotherActivity extends AppCompatActivity{
 
     }
 
+
+
+
+
+
+    public void gotoActivity(View v){
+        Intent intent = new Intent(AnotherActivity.this, ViewAll.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
     public void stopLocationUpdates() {
         // Removing location updates
         mFusedLocationClient
@@ -353,7 +381,7 @@ public class AnotherActivity extends AppCompatActivity{
         if (mCurrentLocation != null) {
             Toast.makeText(getApplicationContext(), "Lat: " + mCurrentLocation.getLatitude()
                     + ", Lng: " + mCurrentLocation.getLongitude(), Toast.LENGTH_LONG).show();
-            writedb();
+
         } else {
             Toast.makeText(getApplicationContext(), "Last known location is not available!", Toast.LENGTH_SHORT).show();
         }
@@ -363,14 +391,14 @@ public class AnotherActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 1){
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            if(result == null){
-                super.onActivityResult(requestCode, resultCode, data);
-            }else{
+            if(result!=null){
                 //get the content from barcode
-                String barcode = result.getContents();
                 //show in a Toast
-                Toast.makeText(this, barcode, Toast.LENGTH_LONG).show();
+                // Toast.makeText(this, barcode, Toast.LENGTH_LONG).show();
                 this.finish();
+            }
+            else{
+                super.onActivityResult(requestCode, resultCode, data);
             }
         }
         if(requestCode == 0) {
@@ -415,7 +443,6 @@ public class AnotherActivity extends AppCompatActivity{
         if (mRequestingLocationUpdates && checkPermissions()) {
             startLocationUpdates();
         }
-
         updateLocationUI();
     }
 
@@ -435,21 +462,16 @@ public class AnotherActivity extends AppCompatActivity{
             stopLocationUpdates();
         }
     }
-    public void writedb(){
-
+   public void writedb(){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
         DatabaseReference ventilatorsRef = ref.child("ventilators");
-        Map<String, Ventilator> ventilators = new HashMap<>();
-        String ventId="TestVentilatorUnit";
-        String model="TestModel";
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String updatedBy=user.getDisplayName();
-        String status= "TestWorking";
         String CurrentLocation=mCurrentLocation.getLatitude()+"."+mCurrentLocation.getLongitude();
-        ventilators.put(ventId, new Ventilator(ventId,model,CurrentLocation,status,updatedBy,mLastUpdateTime));
+        ventilators.put("9728345678908", new Ventilator("9728345678908","Hamilton G5",CurrentLocation,"In-Use",updatedBy,mLastUpdateTime));
+        ventilators.put("9781234567897", new Ventilator("9728345678908","Maquet Servo-I ",CurrentLocation,"Idle",updatedBy,mLastUpdateTime));
+        ventilators.put("9783456789101", new Ventilator("9728345678908","Hamilton G5",CurrentLocation,"In-Use",updatedBy,mLastUpdateTime));
         ventilatorsRef.setValue(ventilators);
-
     }
-
 }

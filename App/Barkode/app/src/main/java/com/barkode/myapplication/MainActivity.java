@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         btnSignOut=findViewById(R.id.sign_out_button);
 
         // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("165269326711-8l39ud0dvm0aiun7mpm8p3rvhs43r1it.apps.googleusercontent.com")
                 .requestEmail()
