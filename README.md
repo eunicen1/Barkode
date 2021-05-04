@@ -1,5 +1,5 @@
 # Barkode
-BMEG 357 Design Project
+Surrey Memorial Hospital Ventialtor Design Project (BME357)
 
 
 ![Uploading image.png…](barkode.png)
